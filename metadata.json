@@ -1,0 +1,6 @@
+{
+  "name": "NorthPeak Digital",
+  "description": "Precision-engineered digital agency platform with interactive 3D hero visualization, service offerings, client testimonials, pricing calculator, and contact request system.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
