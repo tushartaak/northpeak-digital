@@ -8,8 +8,8 @@ NorthPeak Digital is a flagship web experience built for modern enterprise clien
 
 ## 🌐 Live Demo & Repository
 
-- **Live Demo**: [https://northpeak.digital](https://ais-pre-hio4abzpoyk4ry4icz56ho-698555391304.asia-southeast1.run.app)
-- **GitHub Repository**: [https://github.com/northpeak-digital/northpeak-web](https://github.com/northpeak-digital/northpeak-web)
+- **Live Demo**: [https://northpeak-digital-silk.vercel.app/](https://northpeak-digital-silk.vercel.app/)
+- **GitHub Repository**: [https://github.com/tushartaak/northpeak-digital](https://github.com/tushartaak/northpeak-digital)
 
 ---
 
@@ -45,8 +45,8 @@ NorthPeak Digital is a flagship web experience built for modern enterprise clien
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/northpeak-digital/northpeak-web.git
-   cd northpeak-web
+   git clone https://github.com/tushartaak/northpeak-digital.git
+   cd northpeak-digital
    ```
 
 2. **Install Dependencies**
@@ -66,7 +66,7 @@ NorthPeak Digital is a flagship web experience built for modern enterprise clien
    ```
 
 5. **Deploy to Vercel**
-   - Connect your GitHub repository (`northpeak-digital/northpeak-web`) to [Vercel](https://vercel.com/).
+   - Connect your GitHub repository (`tushartaak/northpeak-digital`) to [Vercel](https://vercel.com/).
    - Select **Vite** as the framework preset (Build Command: `npm run build`, Output Directory: `dist`).
    - `vercel.json` will automatically configure URL rewrites for Single Page Application routing.
 
