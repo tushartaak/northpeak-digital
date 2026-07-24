@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Testimonial } from '../types';
 import { X, Star, TrendingUp, Zap, Shield, ArrowRight } from 'lucide-react';
 
@@ -13,6 +13,16 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   onClose,
   onRequestQuote,
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && testimonial) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [testimonial, onClose]);
+
   if (!testimonial) return null;
 
   const caseStudyDetails: Record<
@@ -51,12 +61,17 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
   const detail = caseStudyDetails[testimonial.id] || caseStudyDetails['t1'];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="casestudy-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={onClose}
           aria-label="Close modal dialog"
-          className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-lg text-[#64748b] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff]"
+          className="absolute top-5 right-5 p-2 hover:bg-slate-100 rounded-lg text-[#64748b] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff]"
         >
           <X className="w-5 h-5" />
         </button>
@@ -68,23 +83,25 @@ export const CaseStudyModal: React.FC<CaseStudyModalProps> = ({
             alt={testimonial.author}
             loading="lazy"
             decoding="async"
-            className="w-16 h-16 rounded-full object-cover ring-2 ring-[#2e5bff]"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-[#2e5bff]"
           />
           <div>
             <span className="text-xs font-mono uppercase text-[#2e5bff] font-bold">Case Study Spotlight</span>
-            <h3 className="text-2xl font-extrabold text-[#0f172a]">{testimonial.company}</h3>
-            <p className="text-sm text-[#64748b]">
+            <h3 id="casestudy-modal-title" className="text-xl sm:text-2xl font-extrabold text-[#0f172a]">
+              {testimonial.company}
+            </h3>
+            <p className="text-xs sm:text-sm text-[#64748b]">
               {testimonial.author} — {testimonial.role}
             </p>
           </div>
         </div>
 
         {/* Metrics Bar */}
-        <div className="grid grid-cols-3 gap-3 p-4 bg-[#eef2ff] rounded-xl border border-[#2e5bff]/10">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 sm:p-4 bg-[#eef2ff] rounded-xl border border-[#2e5bff]/10">
           {detail.metrics.map((m, i) => (
             <div key={i} className="text-center">
-              <div className="text-2xl font-extrabold text-[#2e5bff]">{m.value}</div>
-              <div className="text-[11px] font-mono text-[#64748b] uppercase font-semibold">{m.label}</div>
+              <div className="text-xl sm:text-2xl font-extrabold text-[#2e5bff]">{m.value}</div>
+              <div className="text-[10px] sm:text-[11px] font-mono text-[#64748b] uppercase font-semibold">{m.label}</div>
             </div>
           ))}
         </div>

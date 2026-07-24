@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ServiceItem } from '../types';
 import { X, CheckCircle2, ArrowRight, Code } from 'lucide-react';
 
@@ -13,15 +13,30 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
   onClose,
   onRequestQuote,
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && service) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [service, onClose]);
+
   if (!service) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="service-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-xl w-full p-5 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto relative">
         <button
           onClick={onClose}
           aria-label="Close modal dialog"
-          className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-lg text-[#64748b] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff]"
+          className="absolute top-5 right-5 p-2 hover:bg-slate-100 rounded-lg text-[#64748b] cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff]"
         >
           <X className="w-5 h-5" />
         </button>
@@ -31,9 +46,11 @@ export const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
             <Code className="w-8 h-8" />
           </div>
 
-          <h3 className="text-2xl font-extrabold text-[#0f172a]">{service.title}</h3>
+          <h3 id="service-modal-title" className="text-xl sm:text-2xl font-extrabold text-[#0f172a]">
+            {service.title}
+          </h3>
 
-          <p className="text-[#475569] text-base leading-relaxed">
+          <p className="text-[#475569] text-sm sm:text-base leading-relaxed">
             {service.fullDescription}
           </p>
         </div>

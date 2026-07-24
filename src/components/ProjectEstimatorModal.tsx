@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calculator, Check, ArrowRight, Sparkles } from 'lucide-react';
 
 interface ProjectEstimatorModalProps {
@@ -15,6 +15,16 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
   const [projectType, setProjectType] = useState<'web' | 'mobile' | 'ai' | 'fullstack'>('web');
   const [timeline, setTimeline] = useState<'standard' | 'accelerated' | 'sprint'>('standard');
   const [addons, setAddons] = useState<string[]>(['seo']);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -61,8 +71,13 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="estimator-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-in fade-in duration-200"
+    >
+      <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-5 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
         {/* Modal Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
@@ -70,7 +85,9 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
               <Calculator className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-[#0f172a]">Interactive Scope Estimator</h3>
+              <h3 id="estimator-modal-title" className="text-lg sm:text-xl font-bold text-[#0f172a]">
+                Interactive Scope Estimator
+              </h3>
               <p className="text-xs text-[#64748b]">Configure your project parameters for instant budgetary feedback</p>
             </div>
           </div>
@@ -88,7 +105,7 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
           <label className="block text-xs font-mono uppercase font-semibold text-[#475569]">
             1. Select Primary Service Architecture
           </label>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
             {[
               { id: 'web', label: 'Web App', price: '$2,500+' },
               { id: 'mobile', label: 'Mobile App', price: '$3,500+' },
@@ -99,14 +116,14 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => setProjectType(item.id as any)}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff] ${
                   projectType === item.id
                     ? 'border-[#2e5bff] bg-[#eef2ff] text-[#2e5bff] font-bold shadow-xs'
                     : 'border-slate-200 text-[#0f172a] hover:border-slate-300'
                 }`}
               >
-                <div className="text-sm font-bold">{item.label}</div>
-                <div className="text-xs font-mono text-[#64748b]">{item.price}</div>
+                <div className="text-xs sm:text-sm font-bold">{item.label}</div>
+                <div className="text-[11px] sm:text-xs font-mono text-[#64748b]">{item.price}</div>
               </button>
             ))}
           </div>
@@ -117,7 +134,7 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
           <label className="block text-xs font-mono uppercase font-semibold text-[#475569]">
             2. Delivery Urgency
           </label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
             {[
               { id: 'standard', label: 'Standard', time: '4-6 Weeks', desc: '1.0x Rate' },
               { id: 'accelerated', label: 'Accelerated', time: '2-3 Weeks', desc: '1.25x Rate' },
@@ -127,14 +144,14 @@ export const ProjectEstimatorModal: React.FC<ProjectEstimatorModalProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => setTimeline(item.id as any)}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                className={`p-2.5 sm:p-3 rounded-xl border text-left transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2e5bff] ${
                   timeline === item.id
                     ? 'border-[#2e5bff] bg-[#eef2ff] text-[#2e5bff] font-bold'
                     : 'border-slate-200 text-[#0f172a] hover:border-slate-300'
                 }`}
               >
-                <div className="text-sm font-bold">{item.label}</div>
-                <div className="text-xs font-mono text-[#64748b]">{item.time}</div>
+                <div className="text-xs sm:text-sm font-bold">{item.label}</div>
+                <div className="text-[11px] sm:text-xs font-mono text-[#64748b]">{item.time} ({item.desc})</div>
               </button>
             ))}
           </div>
